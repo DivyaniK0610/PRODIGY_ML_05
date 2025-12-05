@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriScan AI - Prodigy ML Task</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><i class="fas fa-utensils"></i> NutriScan AI</h1>
+            <p>Upload a food image to analyze calories & health score.</p>
+        </header>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <form method="post" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <input type="file" name="file" id="file" class="file-input" accept="image/*" onchange="this.form.submit()">
+                    <label for="file" class="file-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Choose an Image
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <!-- Result Section (Only visible if prediction exists) -->
+        {% if prediction %}
+        <div class="result-card">
+            <div class="image-container">
+                <img src="{{ url_for('display_image', filename=filename) }}" alt="Uploaded Food">
+            </div>
+            
+            <div class="info-container">
+                <div class="prediction-badge">
+                    <h2>{{ prediction }}</h2>
+                    <span class="confidence">{{ confidence }}% Confidence</span>
+                </div>
+
+                <div class="nutrition-grid">
+                    <div class="nutri-item">
+                        <i class="fas fa-fire"></i>
+                        <span>{{ nutrition.calories }}</span>
+                        <small>Energy</small>
+                    </div>
+                    <div class="nutri-item">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>{{ nutrition.protein }}</span>
+                        <small>Protein</small>
+                    </div>
+                    <div class="nutri-item">
+                        <i class="fas fa-bread-slice"></i>
+                        <span>{{ nutrition.carbs }}</span>
+                        <small>Carbs</small>
+                    </div>
+                    <div class="nutri-item">
+                        <i class="fas fa-tint"></i>
+                        <span>{{ nutrition.fat }}</span>
+                        <small>Fats</small>
+                    </div>
+                </div>
+
+                <div class="health-score">
+                    <h3>Health Score: {{ nutrition.health_score }}</h3>
+                    <p><i class="fas fa-info-circle"></i> {{ nutrition.tip }}</p>
+                </div>
+                
+                <a href="/" class="btn-reset">Analyze Another</a>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
